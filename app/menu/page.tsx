@@ -2,17 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import { fetchCategories, fetchProducts } from '@/lib/api';
-import ProductCard from '@/components/ProductCard';
 import CategoryTabs from '@/components/CategoryTabs';
 import OrderList from '@/components/OrderList';
 import Modal from '@/components/OrderForm';
 import { Category } from '@/types/Category';
 import { Product } from '@/types/Product';
 import { Order } from '@/types/Order';
-import Link from 'next/link';
-import Image from 'next/image';
 import TitleLink from '@/components/TitleLink';
 import CheckoutForm from '@/components/CheckoutForm';
+import ProductList from '@/components/ProductList';
 
 export default function HomePage() {
     const [categories, setCategories] = useState<Category[]>([]);
@@ -21,10 +19,6 @@ export default function HomePage() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [product, setProduct] = useState<Product>();
     const [showCheckout, setShowCheckout] = useState(false);
-
-    function calcTotal(orders: Order[]): number {
-        return orders.reduce((sum, order) => sum + (order.price * (order.quantity || 1)), 0);
-    }
 
     useEffect(() => {
         (async () => {
@@ -41,6 +35,13 @@ export default function HomePage() {
     console.log('Current Category:', currentCategory);
     const filtered = products.filter(p => p.category_id === currentCategory?.id);
 
+    function onCheckout() {
+        if (orders.length === 0) {
+            return;
+        }
+        setShowCheckout(true);
+    }
+
     return (
         <div>
             <TitleLink />
@@ -50,16 +51,8 @@ export default function HomePage() {
                 onSelect={setCurrentCategory}
             />
             <div className="flex flex-col md:flex-row gap-6">
-                <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    {filtered.map(product => (
-                        <ProductCard
-                            key={product.id}
-                            product={product}
-                            onOrder={() => setProduct(product)}
-                        />
-                    ))}
-                </div>
-                <OrderList orders={orders} />
+                <ProductList products={filtered} onOrder={setProduct}/>
+                <OrderList orders={orders} onCheckout={onCheckout} />
             </div>
             {product && (
                 <Modal
@@ -76,7 +69,6 @@ export default function HomePage() {
                     orders={orders}
                     onClose={() => setShowCheckout(false)}
                     onConfirm={() => {
-                        // 例: localStorage削除 or API呼び出し
                         setOrders([]);
                         setShowCheckout(false);
                     }}

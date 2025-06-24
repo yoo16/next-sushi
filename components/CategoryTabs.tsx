@@ -15,7 +15,7 @@ export default function CategoryTabs({ categories, current, onSelect }: Props) {
                 <button
                     key={cat.id}
                     onClick={() => onSelect(cat)}
-                    className={`flex-1 px-4 py-2 rounded m-1 transition
+                    className={`flex-1 px-4 py-2 rounded m-1 transition cursor-pointer
             ${current?.id === cat.id
                             ? 'bg-sky-600 text-white'
                             : 'bg-white hover:bg-sky-100'}`}

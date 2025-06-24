@@ -35,7 +35,7 @@ export default function Modal({ product, onClose, onConfirm }: Props) {
                 <div className="bg-white p-6">
                     <h2 className="text-xl font-bold mb-2 text-center">{product.name}</h2>
                     <img src={product.image_path} alt={product.name} className="w-32 mx-auto rounded mb-4" />
-                    <p className="text-center mb-4">価格: ¥{product.price}</p>
+                    <p className="text-center mb-4">価格: {product.price}円</p>
 
                     {/* 🔢 数量調整 */}
                     <div className="flex justify-center items-center gap-4 mb-6">
@@ -52,16 +52,16 @@ export default function Modal({ product, onClose, onConfirm }: Props) {
 
                     <div className="flex justify-center gap-4">
                         <button
-                            onClick={onClose}
-                            className="px-4 py-2 bg-gray-300 rounded"
-                        >
-                            閉じる
-                        </button>
-                        <button
                             onClick={handleConfirm}
-                            className="px-4 py-2 bg-sky-500 text-white rounded"
+                            className="px-4 py-2 cursor-pointer bg-sky-600 text-white rounded"
                         >
                             注文する
+                        </button>
+                        <button
+                            onClick={onClose}
+                            className="border border-sky-500 text-sky-600 px-6 py-2 rounded hover:bg-sky-100 transition"
+                        >
+                            閉じる
                         </button>
                     </div>
                 </div>
