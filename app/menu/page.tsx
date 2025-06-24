@@ -11,8 +11,11 @@ import { Order } from '@/types/Order';
 import TitleLink from '@/components/TitleLink';
 import CheckoutForm from '@/components/CheckoutForm';
 import ProductList from '@/components/ProductList';
+import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
+    const router = useRouter();
+
     const [categories, setCategories] = useState<Category[]>([]);
     const [products, setProducts] = useState<any[]>([]);
     const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
@@ -42,6 +45,10 @@ export default function HomePage() {
         setShowCheckout(true);
     }
 
+    function onComplete() {
+        router.push('/complete');
+    }
+
     return (
         <div>
             <TitleLink />
@@ -68,10 +75,7 @@ export default function HomePage() {
                 <CheckoutForm
                     orders={orders}
                     onClose={() => setShowCheckout(false)}
-                    onConfirm={() => {
-                        setOrders([]);
-                        setShowCheckout(false);
-                    }}
+                    onComplete={onComplete}
                 />
             )}
 

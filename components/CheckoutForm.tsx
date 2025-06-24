@@ -4,10 +4,10 @@ import TitleLink from "@/components/TitleLink";
 type Props = {
     orders: Order[];
     onClose: () => void;
-    onConfirm: () => void;
+    onComplete: () => void;
 };
 
-export default function CheckoutModal({ orders, onClose, onConfirm }: Props) {
+export default function CheckoutModal({ orders, onClose, onComplete }: Props) {
     const total = orders.reduce((sum, o) => sum + o.quantity * 100, 0); // 仮価格
     const totalWithTax = Math.round(total * 1.1);
 
@@ -39,7 +39,7 @@ export default function CheckoutModal({ orders, onClose, onConfirm }: Props) {
 
                 <div className="flex justify-center gap-4">
                     <button
-                        onClick={onConfirm}
+                        onClick={onComplete}
                         className="bg-sky-600 text-white px-6 py-2 rounded hover:bg-sky-700 transition"
                     >
                         はい
