@@ -24,8 +24,17 @@ export default function Modal({ product, onClose, onConfirm }: Props) {
             image_path: product.image_path,
             quantity,
         };
+
+        // 注文処理
         onConfirm(order);
         onClose();
+
+        // 音声ファイルの読み込みと再生
+        const voiceFile = localStorage.getItem("voice") || "voice-thanks-1.mp3";
+        const audio = new Audio(`/audio/${voiceFile}`);
+        audio.play().catch((err) => {
+            console.error("音声再生に失敗:", err);
+        });
     };
 
     return (
