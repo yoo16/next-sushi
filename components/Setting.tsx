@@ -1,14 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import TitleLink from '@/components/TitleLink';
-
-const voices = [
-    'voice-thanks-1.mp3',
-    'voice-thanks-2.mp3',
-    'voice-thanks-3.mp3',
-    'voice-thanks-4.mp3',
-    'voice-thanks-5.mp3',
-];
+import { voices } from '@/lib/voiceOptions';
 
 type Props = {
     onClose: () => void;
@@ -35,15 +28,14 @@ export default function Setting({ onClose }: Props) {
 
                 <div className="text-center mb-4">
                     <h3 className="font-bold mb-4">声優</h3>
-                    <select
-                        value={selected}
-                        onChange={handleChange}
-                        className="w-full border border-gray-200 p-4 rounded">
-                        <option value="">選択してください</option>
+                    <select value={selected} onChange={handleChange} className="w-full border p-2 rounded">
                         {voices.map(v => (
-                            <option key={v} value={v}>{v}</option>
+                            <option key={v.file} value={v.file}>
+                                {v.name}
+                            </option>
                         ))}
                     </select>
+
 
                     <button
                         onClick={onClose}
