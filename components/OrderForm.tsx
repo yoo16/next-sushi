@@ -5,6 +5,7 @@ import { Product } from "@/types/Product";
 import { Order } from "@/types/Order";
 import TitleLink from "./TitleLink";
 import { voices } from '@/lib/voiceOptions';
+import { imageUrl } from "@/lib/image";
 
 type Props = {
     product: Product;
@@ -19,11 +20,11 @@ export default function Modal({ product, onClose, onConfirm }: Props) {
 
     const handleConfirm = () => {
         const order: Order = {
-            id: product.id,
-            name: product.name,
+            product_id: product.id,
             price: product.price,
-            image_path: product.image_path,
             quantity,
+            product_name: product.name,
+            product_image_path: product.image_path,
         };
 
         // 注文処理
@@ -45,7 +46,7 @@ export default function Modal({ product, onClose, onConfirm }: Props) {
                 <TitleLink />
                 <div className="bg-white p-6">
                     <h2 className="text-xl font-bold mb-2 text-center">{product.name}</h2>
-                    <img src={product.image_path} alt={product.name} className="w-32 mx-auto rounded mb-4" />
+                    <img src={imageUrl(product.image_path)} alt={product.name} className="w-32 mx-auto rounded mb-4" />
                     <p className="text-center mb-4">価格: {product.price}円</p>
 
                     {/* 🔢 数量調整 */}

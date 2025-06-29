@@ -1,5 +1,6 @@
 'use client';
 
+import { imageUrl } from "@/lib/image";
 import { Order } from "@/types/Order";
 
 type Props = {
@@ -17,8 +18,8 @@ export default function OrderList({ orders, onCheckout }: Props) {
             <ul className="mb-4 space-y-1 max-h-64 overflow-y-auto">
                 {orders.map((order, idx) => (
                     <li key={idx} className="flex justify-start items-center mb-2">
-                        <img src={order.image_path} alt={order.name} className="w-16 m-2" />
-                        <div className="font-bold">{order.name}</div>
+                        <img src={imageUrl(order.product_image_path)} alt={order.product_name} className="w-16 m-2" />
+                        <div className="font-bold">{order.product_name}</div>
                         <span className="ml-auto px-3 py-1 text-white bg-green-500 rounded">{order.quantity}</span>
                     </li>
                 ))}

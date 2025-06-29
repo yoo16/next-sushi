@@ -1,5 +1,9 @@
 import { Order } from "@/types/Order";
 import TitleLink from "@/components/TitleLink";
+import { useState } from "react";
+import { billed } from "@/lib/api";
+import Loading from "@/components/Loading";
+import { on } from "events";
 
 type Props = {
     orders: Order[];
@@ -10,6 +14,32 @@ type Props = {
 export default function CheckoutModal({ orders, onClose, onComplete }: Props) {
     const total = orders.reduce((sum, o) => sum + o.quantity * 100, 0); // 仮価格
     const totalWithTax = Math.round(total * 1.1);
+
+    // ローディング
+    const [isLoading, setIsLoading] = useState(false);
+    // visit_idをlocalStorageから取得
+    const visitId = Number(localStorage.getItem('visit_id'));
+
+    async function onBilled() {
+        try {
+            setIsLoading(true);
+            const result = await billed(visitId)
+            if (result.error) {
+                console.log('チェックアウト失敗:', result.error);
+                return;
+            }
+        } catch (error) {
+            console.error('会計処理中にエラー:', error);
+        } finally {
+            setIsLoading(false);
+        }
+        // 完了処理
+        onComplete();
+    }
+
+    if (isLoading) {
+        return <Loading />;
+    }
 
     return (
         <div className="fixed inset-0 bg-white flex justify-center z-50">
@@ -22,7 +52,7 @@ export default function CheckoutModal({ orders, onClose, onComplete }: Props) {
                     <div className="space-y-2 mb-4">
                         {orders.map((order, idx) => (
                             <div key={idx} className="flex justify-between items-center border-b border-gray-300 p-3">
-                                <div>{order.name}</div>
+                                <div>{order.product_name}</div>
                                 <div className="text-gray-600">×{order.quantity}</div>
                             </div>
                         ))}
@@ -39,7 +69,7 @@ export default function CheckoutModal({ orders, onClose, onComplete }: Props) {
 
                 <div className="flex justify-center gap-4">
                     <button
-                        onClick={onComplete}
+                        onClick={onBilled}
                         className="bg-sky-600 text-white px-6 py-2 rounded hover:bg-sky-700 transition"
                     >
                         はい

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Product } from "@/types/Product";
+import { imageUrl } from "@/lib/image";
 
 type Props = {
     product: Product;
@@ -24,7 +25,7 @@ export default function ProductCard({ product, onOrder }: Props) {
                     </div>
                 )}
                 <img
-                    src={product.image_path}
+                    src={imageUrl(product.image_path)}
                     alt={product.name}
                     className={`w-32 object-cover rounded transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
                     onLoad={() => setLoaded(true)}
