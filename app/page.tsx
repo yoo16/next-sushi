@@ -16,14 +16,23 @@ export default function Home() {
     const [visitId, setVisitId] = useState<number>(0);
     const [message, setMessage] = useState<string>("");
 
-    // 初回マウント時に座席情報を取得
+    // 初回マウント時
     useEffect(() => {
+        // すでに訪問済みの場合はメニュー画面へリダイレクト
+        const visitId = Number(localStorage.getItem("visit_id")) ?? 0;
+        if (visitId > 0) {
+            router.push('/menu');
+            return;
+        }
+        // 座席情報をAPIから取得
         (async () => {
             const result = await fetchSeats();
             if (result.error) {
                 setMessage(result.error);
             } else {
                 setSeats(result.seats);
+                // 最初の座席をデフォルト選択
+                setSeatId(1); 
             }
         })();
     }, []);
@@ -40,9 +49,6 @@ export default function Home() {
         const result = await visitBySeatId(seatId);
         const visit = result?.visit;
         if (visit) {
-            // 訪問情報をローカルストレージに保存
-            localStorage.setItem("visit_id", String(visit.id));
-            localStorage.setItem("seat_id", String(visit.seat_id));
             // 訪問IDを状態に保存
             setVisitId(visit.id);
         }
@@ -50,8 +56,9 @@ export default function Home() {
 
     // 訪問開始処理
     function start() {
-        const visitId = localStorage.getItem("visit_id");
         if (visitId) {
+            // 訪問情報をローカルストレージに保存
+            localStorage.setItem("visit_id", String(visitId));
             // すでに訪問済みの場合は、メニュー画面へリダイレクト 
             router.push('/menu');
         }
@@ -85,7 +92,7 @@ export default function Home() {
                 <>
                     <select onChange={(e) => changeSeat(e)} className="bg-white mb-6 p-3 rounded-lg">
                         {
-                            seats.map((seat) => (
+                            seats.map((seat: Seat) => (
                                 <option
                                     key={seat.id}
                                     value={seat.id}

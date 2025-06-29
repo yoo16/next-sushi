@@ -107,10 +107,6 @@ export default function HomePage() {
 
     // 会計完了
     function onComplete() {
-        // ローカルストレージから訪問IDと座席IDを削除
-        localStorage.removeItem('visit_id');
-        localStorage.removeItem('seat_id');
-
         // 完了画面リダイレクト
         router.push('/complete');
     }

@@ -29,7 +29,7 @@ export default function OrderList({ orders, onCheckout }: Props) {
                 （税込 {totalWithTax}円）
             </div>
             <button
-                className={`block w-full cursor-pointer bg-sky-600 text-white px-6 py-3 rounded text-lg text-center hover:bg-sky-700 transition ${orders.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`block w-full cursor-pointer  text-white px-6 py-3 rounded text-lg text-center  transition ${orders.length === 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-sky-600 hover:bg-sky-700'}`}
                 onClick={onCheckout}
                 disabled={orders.length === 0}
             >
