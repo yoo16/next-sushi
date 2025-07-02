@@ -3,18 +3,14 @@
 import Loading from "@/components/Loading";
 import TitleLink from "@/components/TitleLink";
 import { billed } from "@/lib/api";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function CompletePage() {
-    const router = useRouter();
-
     // ローディング
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        // visit_idを取得して、存在しない場合はトップページへリダイレクト
+        // visit_idを取得して、会計処理を実行
         const visitId = Number(localStorage.getItem('visit_id'));
         bill(visitId);
     }, []);
